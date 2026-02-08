@@ -2,6 +2,8 @@
 
 An AI-powered Slack bot that turns a project description or question into a **Collaboration Map**: it identifies subject matter experts and relevant channels when you react to a message with :handshake:.
 
+🌐 **[View Live Demo](https://zautner.github.io/vibeconnect/)** | 📦 **[GitHub](https://github.com/zautner/vibeconnect)**
+
 ## How it works
 
 1. **Trigger** – Add the :handshake: reaction to any message.
