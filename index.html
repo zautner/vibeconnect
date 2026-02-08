@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeConnect – AI-Powered Collaboration Discovery</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Slack-like sidebar -->
+    <div class="slack-container">
+        <aside class="sidebar">
+            <div class="workspace-header">
+                <div class="workspace-name">
+                    <span class="workspace-icon">🤝</span>
+                    <span>VibeConnect</span>
+                </div>
+            </div>
+            
+            <nav class="channels">
+                <div class="channel-section">
+                    <div class="section-header">Navigation</div>
+                    <a href="#hero" class="channel-item active" data-section="hero">
+                        <span class="channel-hash">#</span>
+                        <span>welcome</span>
+                    </a>
+                    <a href="#demo" class="channel-item" data-section="demo">
+                        <span class="channel-hash">#</span>
+                        <span>live-demo</span>
+                    </a>
+                    <a href="#features" class="channel-item" data-section="features">
+                        <span class="channel-hash">#</span>
+                        <span>features</span>
+                    </a>
+                    <a href="#how-it-works" class="channel-item" data-section="how-it-works">
+                        <span class="channel-hash">#</span>
+                        <span>how-it-works</span>
+                    </a>
+                    <a href="#setup" class="channel-item" data-section="setup">
+                        <span class="channel-hash">#</span>
+                        <span>quick-setup</span>
+                    </a>
+                </div>
+                
+                <div class="channel-section">
+                    <div class="section-header">Resources</div>
+                    <a href="https://github.com/zautner/vibeconnect" target="_blank" class="channel-item">
+                        <span class="channel-hash">🔗</span>
+                        <span>GitHub Repo</span>
+                    </a>
+                    <a href="docs/SETUP.md" target="_blank" class="channel-item">
+                        <span class="channel-hash">📖</span>
+                        <span>Documentation</span>
+                    </a>
+                </div>
+            </nav>
+            
+            <div class="user-info">
+                <div class="user-avatar">👤</div>
+                <div class="user-details">
+                    <div class="user-name">Guest User</div>
+                    <div class="user-status">🟢 Active</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main content area -->
+        <main class="main-content">
+            <!-- Channel header -->
+            <header class="channel-header">
+                <div class="channel-title">
+                    <h1 id="channel-name"># welcome</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn" title="Star on GitHub">⭐ Star</button>
+                    <button class="header-btn" title="Fork">🍴 Fork</button>
+                </div>
+            </header>
+
+            <!-- Messages/Content area -->
+            <div class="messages-container">
+                <!-- Hero Section -->
+                <section id="hero" class="content-section active">
+                    <div class="message-group">
+                        <div class="message">
+                            <div class="message-avatar">🤝</div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="message-author">VibeConnect Bot</span>
+                                    <span class="message-time">Just now</span>
+                                    <span class="bot-badge">APP</span>
+                                </div>
+                                <div class="message-text hero-message">
+                                    <h2>👋 Welcome to VibeConnect</h2>
+                                    <p>An AI-powered Slack bot that discovers experts and collaboration opportunities in your workspace.</p>
+                                    <div class="hero-cta">
+                                        <a href="#demo" class="btn btn-primary">See it in action</a>
+                                        <a href="https://github.com/zautner/vibeconnect" target="_blank" class="btn btn-secondary">View on GitHub</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="message-group fade-in">
+                        <div class="message">
+                            <div class="message-avatar">💡</div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="message-author">System</span>
+                                    <span class="message-time">Just now</span>
+                                </div>
+                                <div class="message-text">
+                                    <div class="feature-grid">
+                                        <div class="feature-card">
+                                            <div class="feature-icon">🔍</div>
+                                            <h3>Smart Discovery</h3>
+                                            <p>AI-powered search across your entire workspace</p>
+                                        </div>
+                                        <div class="feature-card">
+                                            <div class="feature-icon">👥</div>
+                                            <h3>Find Experts</h3>
+                                            <p>Identify subject matter experts instantly</p>
+                                        </div>
+                                        <div class="feature-card">
+                                            <div class="feature-icon">📊</div>
+                                            <h3>Hot Channels</h3>
+                                            <p>Discover relevant channels for any topic</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Demo Section -->
+                <section id="demo" class="content-section">
+                    <div class="message-group">
+                        <div class="message">
+                            <div class="message-avatar">👤</div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="message-author">Sarah Chen</span>
+                                    <span class="message-time">10:23 AM</span>
+                                </div>
+                                <div class="message-text">
+                                    Who knows about our CI/CD pipeline and deployment process?
+                                </div>
+                                <div class="message-reactions">
+                                    <span class="reaction pulse">🤝 1</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="message-group typing-indicator">
+                        <div class="message">
+                            <div class="message-avatar">🤝</div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="message-author">VibeConnect Bot</span>
+                                    <span class="message-time">10:23 AM</span>
+                                    <span class="bot-badge">APP</span>
+                                </div>
+                                <div class="message-text">
+                                    <div class="collaboration-map">
+                                        <h3>🤝 Collaboration Map</h3>
+                                        <p class="map-context"><em>Based on: "Who knows about our CI/CD pipeline..."</em></p>
+                                        
+                                        <div class="map-section">
+                                            <h4>💼 Experts</h4>
+                                            <div class="expert-list">
+                                                <div class="expert-item fade-in-up" style="animation-delay: 0.1s">
+                                                    <span class="expert-name">Alex Rodriguez</span>
+                                                    <span class="expert-reason">— Led CI/CD migration project</span>
+                                                </div>
+                                                <div class="expert-item fade-in-up" style="animation-delay: 0.2s">
+                                                    <span class="expert-name">Jordan Kim</span>
+                                                    <span class="expert-reason">— Active in deployment discussions</span>
+                                                </div>
+                                                <div class="expert-item fade-in-up" style="animation-delay: 0.3s">
+                                                    <span class="expert-name">Morgan Taylor</span>
+                                                    <span class="expert-reason">— Maintains GitHub Actions workflows</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="map-section">
+                                            <h4>🔥 Hot Channels</h4>
+                                            <div class="channel-list">
+                                                <div class="channel-link fade-in-up" style="animation-delay: 0.4s">
+                                                    <span class="channel-name">#devops</span>
+                                                    <span class="channel-reason">— Most CI/CD discussions</span>
+                                                </div>
+                                                <div class="channel-link fade-in-up" style="animation-delay: 0.5s">
+                                                    <span class="channel-name">#engineering</span>
+                                                    <span class="channel-reason">— Deployment planning</span>
+                                                </div>
+                                                <div class="channel-link fade-in-up" style="animation-delay: 0.6s">
+                                                    <span class="channel-name">#github-actions</span>
+                                                    <span class="channel-reason">— Workflow automation</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Features Section -->
+                <section id="features" class="content-section">
+                    <div class="message-group">
+                        <div class="message">
+                            <div class="message-avatar">⚡</div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="message-author">VibeConnect Bot</span>
+                                    <span class="message-time">Now</span>
+                                    <span class="bot-badge">APP</span>
+                                </div>
+                                <div class="message-text">
+                                    <h2>✨ Key Features</h2>
+                                    
+                                    <div class="feature-detail">
+                                        <h3>🧠 AI-Powered Analysis</h3>
+                                        <p>Uses Google Gemini to extract search keywords and analyze conversation patterns</p>
+                                        <ul>
+                                            <li>Natural language understanding</li>
+                                            <li>Context-aware keyword extraction</li>
+                                            <li>Smart expert identification</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="feature-detail">
+                                        <h3>🔍 Workspace-Wide Search</h3>
+                                        <p>Searches across ALL channels the installing user can access</p>
+                                        <ul>
+                                            <li>Not limited to channels the bot is in</li>
+                                            <li>Optimized pagination (up to 50 results)</li>
+                                            <li>Persistent caching for performance</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="feature-detail">
+                                        <h3>⚡ Performance Optimized</h3>
+                                        <p>Built with efficiency in mind</p>
+                                        <ul>
+                                            <li>Caches API responses</li>
+                                            <li>Smart pagination with early exit</li>
+                                            <li>Guaranteed JSON responses</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="feature-detail">
+                                        <h3>🎯 Simple to Use</h3>
+                                        <p>Just react with 🤝 to any message</p>
+                                        <ul>
+                                            <li>No slash commands needed</li>
+                                            <li>Works in threads</li>
+                                            <li>Beautiful Block Kit responses</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- How It Works Section -->
+                <section id="how-it-works" class="content-section">
+                    <div class="message-group">
+                        <div class="message">
+                            <div class="message-avatar">🔧</div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="message-author">VibeConnect Bot</span>
+                                    <span class="message-time">Now</span>
+                                    <span class="bot-badge">APP</span>
+                                </div>
+                                <div class="message-text">
+                                    <h2>🔄 How It Works</h2>
+                                    
+                                    <div class="workflow">
+                                        <div class="workflow-step">
+                                            <div class="step-number">1</div>
+                                            <div class="step-content">
+                                                <h3>🤝 Trigger</h3>
+                                                <p>Add the :handshake: reaction to any message in a channel where the bot is present</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="workflow-arrow">↓</div>
+
+                                        <div class="workflow-step">
+                                            <div class="step-number">2</div>
+                                            <div class="step-content">
+                                                <h3>🧠 NLP</h3>
+                                                <p>Gemini AI extracts 3-4 high-intent search keywords from the message</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="workflow-arrow">↓</div>
+
+                                        <div class="workflow-step">
+                                            <div class="step-number">3</div>
+                                            <div class="step-content">
+                                                <h3>🔍 Retrieval</h3>
+                                                <p>Searches up to 50 relevant posts across all channels the user can access</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="workflow-arrow">↓</div>
+
+                                        <div class="workflow-step">
+                                            <div class="step-number">4</div>
+                                            <div class="step-content">
+                                                <h3>📊 Analysis</h3>
+                                                <p>AI analyzes usernames, channels, and message snippets to identify patterns</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="workflow-arrow">↓</div>
+
+                                        <div class="workflow-step">
+                                            <div class="step-number">5</div>
+                                            <div class="step-content">
+                                                <h3>📤 Delivery</h3>
+                                                <p>Posts a beautiful Collaboration Map with Experts and Hot Channels</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Setup Section -->
+                <section id="setup" class="content-section">
+                    <div class="message-group">
+                        <div class="message">
+                            <div class="message-avatar">🚀</div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="message-author">VibeConnect Bot</span>
+                                    <span class="message-time">Now</span>
+                                    <span class="bot-badge">APP</span>
+                                </div>
+                                <div class="message-text">
+                                    <h2>⚙️ Quick Setup</h2>
+                                    
+                                    <div class="setup-steps">
+                                        <div class="setup-step">
+                                            <h3>1️⃣ Create Slack App</h3>
+                                            <p>Go to <a href="https://api.slack.com/apps" target="_blank">api.slack.com/apps</a> and create a new app</p>
+                                            <div class="code-block">
+                                                <div class="code-header">Required scopes:</div>
+                                                <code>
+                                                    Bot: channels:history, chat:write, reactions:read, users:read<br>
+                                                    User: search:read
+                                                </code>
+                                            </div>
+                                        </div>
+
+                                        <div class="setup-step">
+                                            <h3>2️⃣ Get API Keys</h3>
+                                            <p>Get your Gemini API key from <a href="https://aistudio.google.com/apikey" target="_blank">Google AI Studio</a></p>
+                                        </div>
+
+                                        <div class="setup-step">
+                                            <h3>3️⃣ Install</h3>
+                                            <div class="code-block">
+                                                <div class="code-header">bash</div>
+                                                <code>
+                                                    git clone https://github.com/zautner/vibeconnect.git<br>
+                                                    cd vibeconnect<br>
+                                                    cp .env.example .env<br>
+                                                    # Edit .env with your tokens<br>
+                                                    python -m venv .venv<br>
+                                                    source .venv/bin/activate<br>
+                                                    pip install -r requirements.txt<br>
+                                                    python app.py
+                                                </code>
+                                            </div>
+                                        </div>
+
+                                        <div class="setup-step">
+                                            <h3>4️⃣ Deploy</h3>
+                                            <p>Use ngrok for local testing or deploy to your favorite platform</p>
+                                            <div class="code-block">
+                                                <div class="code-header">bash</div>
+                                                <code>ngrok http 3000</code>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="cta-box">
+                                        <h3>📖 Need detailed instructions?</h3>
+                                        <p>Check out our comprehensive setup guide</p>
+                                        <a href="docs/SETUP.md" target="_blank" class="btn btn-primary">View Full Documentation</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Message input (decorative) -->
+            <div class="message-input-container">
+                <div class="message-input">
+                    <button class="input-btn">+</button>
+                    <input type="text" placeholder="Explore the sections above ↑" disabled>
+                    <button class="input-btn">😊</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
