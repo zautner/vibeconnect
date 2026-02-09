@@ -93,7 +93,7 @@
                                 </div>
                                 <div class="message-text hero-message">
                                     <h2>👋 Welcome to VibeConnect</h2>
-                                    <p>An AI-powered Slack bot that discovers experts and collaboration opportunities in your workspace.</p>
+                                    <p>An AI-powered Slack bot that discovers experts and collaboration opportunities in your workspace. @mention the bot with your question to get a Collaboration Map.</p>
                                     <div class="hero-cta">
                                         <a href="#demo" class="btn btn-primary">See it in action</a>
                                         <a href="https://github.com/zautner/vibeconnect" target="_blank" class="btn btn-secondary">View on GitHub</a>
@@ -146,10 +146,7 @@
                                     <span class="message-time">10:23 AM</span>
                                 </div>
                                 <div class="message-text">
-                                    Who knows about our CI/CD pipeline and deployment process?
-                                </div>
-                                <div class="message-reactions">
-                                    <span class="reaction pulse">🤝 1</span>
+                                    <span class="mention">@VibeConnect</span> Who knows about our CI/CD pipeline and deployment process?
                                 </div>
                             </div>
                         </div>
@@ -169,6 +166,11 @@
                                         <h3>🤝 Collaboration Map</h3>
                                         <p class="map-context"><em>Based on: "Who knows about our CI/CD pipeline..."</em></p>
                                         
+                                        <div class="map-section">
+                                            <h4>📋 Summary</h4>
+                                            <p class="map-summary">The CI/CD pipeline uses GitHub Actions; the migration was led by the DevOps team last quarter. Key discussions happen in #devops and #engineering.</p>
+                                        </div>
+
                                         <div class="map-section">
                                             <h4>💼 Experts</h4>
                                             <div class="expert-list">
@@ -257,11 +259,11 @@
 
                                     <div class="feature-detail">
                                         <h3>🎯 Simple to Use</h3>
-                                        <p>Just react with 🤝 to any message</p>
+                                        <p>Just @mention the bot with your question</p>
                                         <ul>
                                             <li>No slash commands needed</li>
-                                            <li>Works in threads</li>
-                                            <li>Beautiful Block Kit responses</li>
+                                            <li>Summary + Experts + Hot Channels (experts exclude the bot)</li>
+                                            <li>Beautiful Block Kit responses with clickable @mentions and #channels</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -288,8 +290,8 @@
                                         <div class="workflow-step">
                                             <div class="step-number">1</div>
                                             <div class="step-content">
-                                                <h3>🤝 Trigger</h3>
-                                                <p>Add the :handshake: reaction to any message in a channel where the bot is present</p>
+                                                <h3>@ Mention</h3>
+                                                <p>@mention the bot with your question (e.g. <code>@VibeConnect who knows about CI?</code>) in any channel where the bot is present</p>
                                             </div>
                                         </div>
 
@@ -319,7 +321,7 @@
                                             <div class="step-number">4</div>
                                             <div class="step-content">
                                                 <h3>📊 Analysis</h3>
-                                                <p>AI analyzes usernames, channels, and message snippets to identify patterns</p>
+                                                <p>AI generates a summary and identifies experts (excluding the bot) and relevant channels from the search results</p>
                                             </div>
                                         </div>
 
@@ -329,7 +331,7 @@
                                             <div class="step-number">5</div>
                                             <div class="step-content">
                                                 <h3>📤 Delivery</h3>
-                                                <p>Posts a beautiful Collaboration Map with Experts and Hot Channels</p>
+                                                <p>Posts a Collaboration Map with a Summary, Experts (excluding the bot), and Hot Channels</p>
                                             </div>
                                         </div>
                                     </div>
@@ -360,10 +362,11 @@
                                             <div class="code-block">
                                                 <div class="code-header">Required scopes:</div>
                                                 <code>
-                                                    Bot: channels:history, chat:write, reactions:read, users:read<br>
+                                                    Bot: app_mentions:read, channels:history, chat:write, users:read, groups:history<br>
                                                     User: search:read
                                                 </code>
                                             </div>
+                                            <p class="setup-note">Event: <code>app_mention</code></p>
                                         </div>
 
                                         <div class="setup-step">

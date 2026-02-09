@@ -437,6 +437,20 @@ body {
     margin-bottom: 20px;
 }
 
+.map-summary {
+    margin: 0 0 16px;
+    color: #1d1c1d;
+    line-height: 1.5;
+}
+
+.message-text .mention {
+    background: #1264a3;
+    color: #fff;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
 .map-section {
     margin-bottom: 20px;
 }
@@ -558,6 +572,18 @@ body {
 
 .setup-step h3 {
     margin-top: 0;
+}
+
+.setup-note {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #616061;
+}
+
+.setup-note code {
+    background: #eee;
+    padding: 2px 6px;
+    border-radius: 3px;
 }
 
 .code-block {
