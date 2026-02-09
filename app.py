@@ -1,9 +1,10 @@
 """
 VibeConnect – Slack bot entrypoint.
-Trigger: :handshake: on a message -> Collaboration Map (Experts + Hot Channels).
+Trigger: @mention the bot -> Collaboration Map (Experts + Hot Channels).
 """
 
 import os
+import re
 import logging
 from dotenv import load_dotenv
 
@@ -11,8 +12,6 @@ load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-TRIGGER_EMOJI = "handshake"
 
 # ---------------------------------------------------------------------------
 # Setup-mode helpers
@@ -91,41 +90,27 @@ def get_message(client, channel_id: str, ts: str) -> tuple[str, str]:
 def _register_handlers(bolt_app):
     """Register all Slack event handlers on the given Bolt app."""
 
-    @bolt_app.event("reaction_added")
-    def handle_reaction_added(event, client, say):
-        """When user adds the trigger emoji to a message, build and post the Collaboration Map."""
-        if event.get("reaction") != TRIGGER_EMOJI:
-            return
-
-        item = event.get("item") or {}
-        if item.get("type") != "message":
-            return
-
-        channel_id = item.get("channel")
-        ts = item.get("ts")
+    @bolt_app.event("app_mention")
+    def handle_app_mention(event, client, say):
+        """When user @mentions the bot, build and post the Collaboration Map."""
+        channel_id = event.get("channel")
+        ts = event.get("ts")
         if not channel_id or not ts:
             return
 
         # Avoid reacting to our own bot messages
-        if event.get("user") == event.get("bot_id"):
-            return
-
-        try:
-            message_text, message_user = get_message(client, channel_id, ts)
-        except Exception as e:
-            logger.exception("Failed to fetch message")
-            _reply_ephemeral_or_channel(client, channel_id, ts, f"Could not read the message: {e}")
-            return
-
-        # Don't build a map for our own bot messages
         bot_id = _get_bot_user_id(client)
-        if bot_id and message_user == bot_id:
+        if bot_id and event.get("user") == bot_id:
             return
+
+        # Strip the bot mention from the message text
+        raw_text = (event.get("text") or "").strip()
+        message_text = re.sub(r"<@[A-Z0-9]+>", "", raw_text).strip()
 
         if not message_text:
             _reply_ephemeral_or_channel(
                 client, channel_id, ts,
-                "I couldn't read the message content (e.g. file-only or no history access).",
+                "Please include a message after mentioning me, e.g. `@VibeConnect how do I deploy?`",
             )
             return
 
@@ -192,7 +177,7 @@ def _get_bot_user_id(client) -> str | None:
 
 
 def _reply_ephemeral_or_channel(client, channel_id: str, thread_ts: str, text: str):
-    """Post error/fallback message; prefer thread reply (no ephemeral for reactions)."""
+    """Post error/fallback message; prefer thread reply."""
     from slack_sdk.errors import SlackApiError
     try:
         client.chat_postMessage(
