@@ -134,6 +134,7 @@ def _register_handlers(bolt_app):
             logger.info("Search returned %d results", len(search_results))
 
             result = analyze_to_collaboration_map(message_text, search_results)
+            summary = result.get("summary") or ""
             experts = result.get("experts") or []
             channels = result.get("channels") or []
 
@@ -150,7 +151,7 @@ def _register_handlers(bolt_app):
                 cid = sr.get("channel_id") or ""
                 if cname and cid:
                     channel_name_to_id[cname.lstrip("#").lower()] = cid
-
+            
             for e in experts:
                 if not e.get("user_id"):
                     name = (e.get("name") or "").lower()
@@ -161,8 +162,16 @@ def _register_handlers(bolt_app):
                     name = (c.get("name") or "").lstrip("#").lower()
                     c["channel_id"] = channel_name_to_id.get(name, "")
 
+            # Filter out the bot itself and the searcher from experts
+            searcher_user_id = event.get("user")
+            experts = [
+                e for e in experts 
+                if e.get("user_id") != bot_id and e.get("user_id") != searcher_user_id
+            ]
+
             blocks = collaboration_map_blocks(
                 query_preview=message_text,
+                summary=summary,
                 experts=experts,
                 channels=channels,
             )

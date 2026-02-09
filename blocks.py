@@ -7,11 +7,13 @@ def collaboration_map_blocks(
     query_preview: str,
     experts: list[dict],
     channels: list[dict],
+    summary: str = "",
 ) -> list[dict]:
     """
     Build Block Kit blocks for the VibeConnect response.
     experts: list of {"user_id", "name", "reason"}.
     channels: list of {"channel_id", "name", "reason"}.
+    summary: AI-generated summary of the most relevant information.
     """
     header = {
         "type": "header",
@@ -22,6 +24,12 @@ def collaboration_map_blocks(
         "elements": [{"type": "mrkdwn", "text": f"Based on: _{query_preview[:200]}_"}],
     }
     sections = [header, context]
+
+    if summary:
+        sections.append({
+            "type": "section",
+            "text": {"type": "mrkdwn", "text": f"*Summary*\n{summary}"},
+        })
 
     if experts:
         expert_lines = []

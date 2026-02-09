@@ -99,12 +99,13 @@ Query / message context: {query[:500]}
 Search results (user_id, user, channel_id, channel, snippet):
 {summary}
 
-From these results:
-1. List 3–6 PEOPLE who appear to be subject matter experts or active collaborators. Deduplicate. Prefer people who appear multiple times or in substantive messages. Include their user_id from the data.
-2. List 3–6 CHANNELS that are most relevant for this topic. Deduplicate. Prefer channels with multiple relevant hits. Include their channel_id from the data.
+From these results,
+1. First add 1-2 sentences summarizing the information most relevant to the query from the search results.
+2. List 3–6 PEOPLE who appear to be subject matter experts or active collaborators. Deduplicate. Prefer people who appear multiple times or in substantive messages. Include their user_id from the data. 
+3. List 3–6 CHANNELS that are most relevant for this topic. Deduplicate. Prefer channels with multiple relevant hits. Include their channel_id from the data.
 
 Output ONLY a single JSON object with exactly this shape (no markdown, no extra text):
-{{"experts": [{{"user_id": "U...", "name": "Full Name", "reason": "one short phrase why"}}, ...], "channels": [{{"channel_id": "C...", "name": "#channel-name", "reason": "one short phrase why"}}, ...]}}
+{{"summary": "the information most relevant to the query from the search results", "experts": [{{"user_id": "U...", "name": "Full Name", "reason": "one short phrase why"}}, ...], "channels": [{{"channel_id": "C...", "name": "#channel-name", "reason": "one short phrase why"}}, ...]}}
 """
 
     response = _client().models.generate_content(
@@ -126,6 +127,7 @@ Output ONLY a single JSON object with exactly this shape (no markdown, no extra 
         if not isinstance(channels, list):
             channels = []
         return {
+            "summary": out.get("summary") or "",
             "experts": [e if isinstance(e, dict) else {"name": str(e), "reason": ""} for e in experts[:8]],
             "channels": [c if isinstance(c, dict) else {"name": str(c), "reason": ""} for c in channels[:8]],
         }

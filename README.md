@@ -10,7 +10,7 @@ An AI-powered Slack bot that turns a project description or question into a **Co
 2. **NLP** – The message text is sent to Gemini to extract 3–4 high-intent search keywords.
 3. **Retrieval** – Slack `search.messages` (with your user token) finds up to 50 relevant posts from across all channels the installing user can access.
 4. **Analysis** – Metadata (usernames, channel names, snippets) is analyzed by the LLM.
-5. **Delivery** – The bot posts a Block Kit card with **Experts** and **Hot Channels**.
+5. **Delivery** – The bot posts a Block Kit card with **Experts** (excluding the requester and the bot) and **Hot Channels**.
 
 ## Setup
 
