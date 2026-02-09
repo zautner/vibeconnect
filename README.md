@@ -1,4 +1,4 @@
-# VibeConnect – Expert & Collaboration Discovery
+# Slack It! – Expert & Collaboration Discovery
 
 An AI-powered Slack bot that turns a project description or question into a **Collaboration Map**: it identifies subject matter experts and relevant channels when you @mention the bot.
 
@@ -6,7 +6,7 @@ An AI-powered Slack bot that turns a project description or question into a **Co
 
 ## How it works
 
-1. **Trigger** – @mention the bot with your question (e.g. `@VibeConnect who knows about CI?`).
+1. **Trigger** – @mention the bot with your question (e.g. `@Slack It! who knows about CI?`).
 2. **NLP** – The message text is sent to Gemini to extract 3–4 high-intent search keywords.
 3. **Retrieval** – Slack `search.messages` (with your user token) finds up to 50 relevant posts from across all channels the installing user can access.
 4. **Analysis** – Metadata (usernames, channel names, snippets) is analyzed by the LLM.
