@@ -363,12 +363,13 @@ body {
 }
 
 .btn-primary {
-    background: HSL(345°, 100%, 47%);
-    color: #fff;
+   background: #fff;
+    color: #1d1c1d;
+    border: 1px solid #ddd;
 }
 
 .btn-primary:hover {
-    background: HSL(345°, 100%, 47%);
+    background: #f8f8f8;
 }
 
 .btn-secondary {
