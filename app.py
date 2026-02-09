@@ -137,6 +137,30 @@ def _register_handlers(bolt_app):
             experts = result.get("experts") or []
             channels = result.get("channels") or []
 
+            # Build fallback name->id maps from search results in case LLM
+            # didn't return the IDs reliably.
+            user_name_to_id = {}
+            channel_name_to_id = {}
+            for sr in search_results:
+                uname = sr.get("user_name") or ""
+                uid = sr.get("user_id") or ""
+                if uname and uid:
+                    user_name_to_id[uname.lower()] = uid
+                cname = sr.get("channel_name") or ""
+                cid = sr.get("channel_id") or ""
+                if cname and cid:
+                    channel_name_to_id[cname.lstrip("#").lower()] = cid
+
+            for e in experts:
+                if not e.get("user_id"):
+                    name = (e.get("name") or "").lower()
+                    e["user_id"] = user_name_to_id.get(name, "")
+
+            for c in channels:
+                if not c.get("channel_id"):
+                    name = (c.get("name") or "").lstrip("#").lower()
+                    c["channel_id"] = channel_name_to_id.get(name, "")
+
             blocks = collaboration_map_blocks(
                 query_preview=message_text,
                 experts=experts,

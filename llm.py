@@ -72,8 +72,8 @@ def analyze_to_collaboration_map(
 ) -> dict:
     """
     Feed search result metadata to the LLM and get structured Experts + Hot Channels.
-    search_results: list of {"user_name", "channel_name", "snippet", "permalink"}.
-    Returns {"experts": [{"name", "reason"}], "channels": [{"name", "reason"}]}.
+    search_results: list of {"user_id", "user_name", "channel_id", "channel_name", "snippet", "permalink"}.
+    Returns {"experts": [{"user_id", "name", "reason"}], "channels": [{"channel_id", "name", "reason"}]}.
     """
     if not search_results:
         return {"experts": [], "channels": []}
@@ -81,7 +81,9 @@ def analyze_to_collaboration_map(
     summary = json.dumps(
         [
             {
+                "user_id": r.get("user_id") or "",
                 "user": r.get("user_name") or "unknown",
+                "channel_id": r.get("channel_id") or "",
                 "channel": r.get("channel_name") or "unknown",
                 "snippet": (r.get("snippet") or "")[:300],
             }
@@ -94,15 +96,15 @@ def analyze_to_collaboration_map(
 
 Query / message context: {query[:500]}
 
-Search results (user, channel, snippet):
+Search results (user_id, user, channel_id, channel, snippet):
 {summary}
 
 From these results:
-1. List 3–6 PEOPLE who appear to be subject matter experts or active collaborators (name only, no @). Deduplicate. Prefer people who appear multiple times or in substantive messages.
-2. List 3–6 CHANNELS that are most relevant for this topic (channel name only). Deduplicate. Prefer channels with multiple relevant hits.
+1. List 3–6 PEOPLE who appear to be subject matter experts or active collaborators. Deduplicate. Prefer people who appear multiple times or in substantive messages. Include their user_id from the data.
+2. List 3–6 CHANNELS that are most relevant for this topic. Deduplicate. Prefer channels with multiple relevant hits. Include their channel_id from the data.
 
 Output ONLY a single JSON object with exactly this shape (no markdown, no extra text):
-{{"experts": [{{"name": "Full Name", "reason": "one short phrase why"}}, ...], "channels": [{{"name": "#channel-name", "reason": "one short phrase why"}}, ...]}}
+{{"experts": [{{"user_id": "U...", "name": "Full Name", "reason": "one short phrase why"}}, ...], "channels": [{{"channel_id": "C...", "name": "#channel-name", "reason": "one short phrase why"}}, ...]}}
 """
 
     response = _client().models.generate_content(
