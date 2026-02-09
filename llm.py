@@ -42,7 +42,7 @@ def extract_search_keywords(message_text: str) -> list[str]:
     prompt = """You are a search query expert for workplace chat (e.g. Slack).
 Given the following message, output exactly 3 to 4 search keywords that would best find related past conversations and experts in Slack's search.
 Each keyword should be a SINGLE word or at most a two-word term. Do NOT use long phrases. Keep them short and specific.
-The following are also legitimate key words: "family life design", "going balls", "hole it", "unravel master", "screw guru". Use them as is in the keyword search if mentioned. Unless the query content asks for it, do not suggest channels of other games in the query result of a specific game.
+The following are also legitimate key words: "family life design", "going balls", "hole it", "unravel master", "screw guru". Use them as is in the keyword search if mentioned.
 Output ONLY a JSON array of strings, no other text. Example: ["deployment", "CI pipeline", "testing"].
 
 Message:
@@ -133,7 +133,7 @@ Files found (file_name, file_type, uploader, permalink):
 From these results,
 1. First add 1-2 sentences summarizing the information most relevant to the query from the search results.
 2. List up to 3 PEOPLE who appear to be subject matter experts or active collaborators. Deduplicate. Prefer people who appear multiple times or in substantive messages, not just in short replies. Include their user_id from the data. 
-3. List up to 3 CHANNELS that are most relevant for this topic. Deduplicate. Prefer channels with multiple relevant hits. Include their channel_id from the data.
+3. List up to 3 CHANNELS that are most relevant for this topic. Deduplicate. Prefer channels with multiple relevant hits. Include their channel_id from the data. If these terms appear in the keywords: "family life design", "going balls", "hole it", "unravel master", "screw guru", note that those are games from our catalog and they might have their dedicated channels. Unless the query content asks for it, do not suggest channels of other games in the query result of a specific game.
 {files_instruction}
 
 Output ONLY a single JSON object with exactly this shape (no markdown, no extra text):
