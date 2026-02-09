@@ -131,8 +131,8 @@ Files found (file_name, file_type, uploader, permalink):
     prompt += f"""
 From these results,
 1. First add 1-2 sentences summarizing the information most relevant to the query from the search results.
-2. List 3–6 PEOPLE who appear to be subject matter experts or active collaborators. Deduplicate. Prefer people who appear multiple times or in substantive messages. Include their user_id from the data. 
-3. List 3–6 CHANNELS that are most relevant for this topic. Deduplicate. Prefer channels with multiple relevant hits. Include their channel_id from the data.
+2. List up to 3 PEOPLE who appear to be subject matter experts or active collaborators. Deduplicate. Prefer people who appear multiple times or in substantive messages, not just in short replies. Include their user_id from the data. 
+3. List up to 3 CHANNELS that are most relevant for this topic. Deduplicate. Prefer channels with multiple relevant hits. Include their channel_id from the data.
 {files_instruction}
 
 Output ONLY a single JSON object with exactly this shape (no markdown, no extra text):
