@@ -105,7 +105,7 @@ def _register_handlers(bolt_app):
 
         # Strip the bot mention from the message text
         raw_text = (event.get("text") or "").strip()
-        message_text = re.sub(r"<@[A-Z0-9]+>", "", raw_text).strip()
+        message_text = re.sub(r"<@[A-Za-z0-9]+>", "", raw_text).strip()
 
         if not message_text:
             _reply_ephemeral_or_channel(

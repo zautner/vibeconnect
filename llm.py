@@ -40,8 +40,9 @@ def extract_search_keywords(message_text: str) -> list[str]:
         return []
 
     prompt = """You are a search query expert for workplace chat (e.g. Slack).
-Given the following message, output exactly 3 to 4 short keywords or phrases that would best find related past conversations and experts in a message search.
-Output ONLY a JSON array of strings, no other text. Example: ["keyword1", "phrase two", "topic"].
+Given the following message, output exactly 3 to 4 search keywords that would best find related past conversations and experts in Slack's search.
+Each keyword should be a SINGLE word or at most a two-word term. Do NOT use long phrases. Keep them short and specific.
+Output ONLY a JSON array of strings, no other text. Example: ["deployment", "CI pipeline", "testing"].
 
 Message:
 """ + message_text.strip()[:2000]

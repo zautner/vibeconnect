@@ -33,9 +33,8 @@ def search_slack_messages(keywords: list[str], count: int = 100) -> list[dict]:
     if not keywords:
         return []
 
-    # Build query: OR of quoted phrases for exact-ish match (no in:channel = all user's channels)
-    query_parts = [f'"{k}"' if " " in k else k for k in keywords[:4]]
-    query = " OR ".join(query_parts)
+    # Build query: OR of keywords (no quoting – let Slack match flexibly)
+    query = " OR ".join(keywords[:4])
 
     client = get_user_client()
     per_page = min(count, 100)  # Slack max is 100 per page

@@ -20,7 +20,7 @@ You'll land on the app's **Basic Information** page. Keep this tab open; you'll 
 
 ### 1.2 Configure Bot Token Scopes
 
-The bot needs permission to read messages, read reactions, and post replies.
+The bot needs permission to read mentions, read messages, and post replies.
 
 1. In the left sidebar, open **OAuth & Permissions**.
 2. Scroll to **Scopes**.
@@ -28,9 +28,9 @@ The bot needs permission to read messages, read reactions, and post replies.
 
    | Scope | Purpose |
    |-------|--------|
+   | `app_mentions:read` | Receive events when someone @mentions the bot |
    | `channels:history` | Read messages in public channels the bot is in |
    | `chat:write` | Post the Collaboration Map reply in the channel/thread |
-   | `reactions:read` | See when someone adds the :handshake: reaction |
    | `users:read` | Resolve user IDs to display names in the map |
    | `groups:history` | Read messages in private channels the bot is in |
    | `im:history` | Read messages in DMs with the bot (optional) |
@@ -86,7 +86,7 @@ If your workspace doesn't allow "Act as user" or user tokens, the app will fail 
 
 ### 1.6 Enable Event Subscriptions
 
-The bot must receive Slack events (e.g. `reaction_added`). You can use **HTTP** (with ngrok) or **Socket Mode**.
+The bot must receive Slack events (e.g. `app_mention`). You can use **HTTP** (with ngrok) or **Socket Mode**.
 
 > **Note**: The app supports a **setup mode** -- if your `.env` still has placeholder tokens, `python app.py` will start a minimal server that responds to Slack's URL verification challenge. This lets you verify the Request URL before you have all tokens filled in. Once verified, update `.env` with real tokens and restart.
 
@@ -104,7 +104,7 @@ The bot must receive Slack events (e.g. `reaction_added`). You can use **HTTP** 
    Replace `YOUR_NGROK_SUBDOMAIN` with your actual ngrok subdomain.
 7. When the URL is verified, Slack shows a green checkmark.
 8. Under **Subscribe to bot events**, click **Add Bot User Event** and add:
-   - **`reaction_added`** -- fired when anyone adds an emoji (including :handshake:) to a message.
+   - **`app_mention`** -- fired when someone @mentions the bot in a channel.
 9. Click **Save Changes**.
 
 If you change the ngrok URL (e.g. after restarting ngrok), update the Request URL in Slack and save again.
@@ -121,20 +121,20 @@ If you change the ngrok URL (e.g. after restarting ngrok), update the Request UR
 5. In **Event Subscriptions**:
    - Turn **Enable Events** **On**.
    - You do **not** set a Request URL when using Socket Mode; the app connects to Slack via WebSocket.
-   - Under **Subscribe to bot events**, add **`reaction_added`** as above.
+   - Under **Subscribe to bot events**, add **`app_mention`** as above.
 6. Save.
 
 ---
 
 ### 1.7 Add the bot to a channel
 
-For the bot to receive the :handshake: reaction event, read the specific message being reacted to, and post the Collaboration Map reply, it must be **in** that channel.
+For the bot to receive @mention events and post the Collaboration Map reply, it must be **in** that channel.
 
-**Important**: The bot only needs to be in the channel where you're adding reactions. The **search** step (which finds relevant experts and channels) uses the **user token** and searches across **all channels the installing user can access**, not just channels the bot is in.
+**Important**: The bot only needs to be in the channel where you're @mentioning it. The **search** step (which finds relevant experts and channels) uses the **user token** and searches across **all channels the installing user can access**, not just channels the bot is in.
 
 **How to add the bot to a channel**
 
-1. Open the channel in Slack (public or private) where you want to use the :handshake: reaction.
+1. Open the channel in Slack (public or private) where you want to @mention the bot.
 2. Click the **channel name** at the top of the channel to open the channel details.
 3. Open the **Integrations** tab (or **Apps** / **Add apps**, depending on your Slack version).
 4. Click **Add apps** (or **Add an app**).
@@ -147,23 +147,23 @@ For the bot to receive the :handshake: reaction event, read the specific message
 
 **Notes**
 
-- **Public channels**: Any member can usually add the bot. You need `channels:history` for the bot to read the message being reacted to.
-- **Private channels**: Someone with permission to add members must add the bot (Integrations -> Add apps, or `/invite @VibeConnect`). You need `groups:history` for the bot to read the message there.
-- **Add the bot to every channel where you want to use :handshake:** reactions. The search for experts and channels will still cover the entire workspace (all channels the installing user can access), but the bot must be present to receive the reaction event and read the specific message.
+- **Public channels**: Any member can usually add the bot. You need `channels:history` for the bot to read messages.
+- **Private channels**: Someone with permission to add members must add the bot (Integrations -> Add apps, or `/invite @VibeConnect`). You need `groups:history` for the bot to read messages there.
+- **Add the bot to every channel where you want to @mention it.** The search for experts and channels will still cover the entire workspace (all channels the installing user can access), but the bot must be present to receive the mention event.
 
 ---
 
 ### 1.8 Slack setup checklist
 
 - [ ] App created at api.slack.com/apps
-- [ ] Bot Token Scopes: `channels:history`, `chat:write`, `reactions:read`, `users:read`, `groups:history` (and optionally `im:history`, `mpim:history`)
+- [ ] Bot Token Scopes: `app_mentions:read`, `channels:history`, `chat:write`, `users:read`, `groups:history` (and optionally `im:history`, `mpim:history`)
 - [ ] User Token Scopes: `search:read`
 - [ ] **Signing Secret** copied
 - [ ] App installed to workspace
 - [ ] **Bot User OAuth Token** (`xoxb-...`) and **User OAuth Token** (`xoxp-...`) copied
-- [ ] Event Subscriptions enabled; **`reaction_added`** subscribed
+- [ ] Event Subscriptions enabled; **`app_mention`** subscribed
 - [ ] Request URL set (HTTP + ngrok) **or** Socket Mode enabled with app-level token
-- [ ] Bot invited to the channels where you want to use :handshake:
+- [ ] Bot invited to the channels where you want to @mention it
 
 ---
 
@@ -238,9 +238,8 @@ python app.py
 
 ### 3.3 Test the bot
 
-1. In a channel where the bot is added, post a message (e.g. "Who knows about our CI pipeline?").
-2. Add the **:handshake:** reaction to that message.
-3. The bot should reply in the thread with a Collaboration Map (Experts and Hot Channels). If it doesn't, check the app logs and the Slack Event Subscriptions / Socket Mode setup.
+1. In a channel where the bot is added, type `@VibeConnect Who knows about our CI pipeline?` and send.
+2. The bot should reply in the thread with a Collaboration Map (Experts and Hot Channels). If it doesn't, check the app logs and the Slack Event Subscriptions / Socket Mode setup.
 
 ---
 
@@ -252,14 +251,14 @@ python app.py
 | "Slack user token must have search:read scope" | Add `search:read` under **User Token Scopes**, reinstall the app, and use the new **User OAuth Token** in `SLACK_USER_TOKEN`. |
 | "GEMINI_API_KEY is not set" | Add `GEMINI_API_KEY=...` to `.env` and restart the app. |
 | Request URL not verified (ngrok) | App must be running and ngrok must be forwarding to the same port; URL must be exactly `https://.../slack/events`. |
-| No response to :handshake: | Event Subscriptions enabled and `reaction_added` subscribed; Request URL (ngrok) or Socket Mode configured; app running and no errors in logs. |
+| No response to @mention | Event Subscriptions enabled and `app_mention` subscribed; Request URL (ngrok) or Socket Mode configured; app running and no errors in logs. |
 
 ---
 
 ## Summary
 
-1. **Slack**: Create app -> add Bot and User OAuth scopes -> get Signing Secret -> install app -> copy Bot token, User token -> start app -> enable Events (HTTP + ngrok or Socket Mode) -> subscribe to `reaction_added`.
+1. **Slack**: Create app -> add Bot and User OAuth scopes -> get Signing Secret -> install app -> copy Bot token, User token -> start app -> enable Events (HTTP + ngrok or Socket Mode) -> subscribe to `app_mention`.
 2. **Google AI Studio**: Create API key -> copy key -> set `GEMINI_API_KEY` in `.env`.
 3. **App**: Put all tokens and secrets in `.env`, run `python app.py`, and (if using ngrok) point Slack's Request URL to `https://YOUR_NGROK_HOST/slack/events`.
 
-After that, reacting with :handshake: in a channel where the bot is present will trigger the Collaboration Map.
+After that, @mentioning the bot in a channel where it is present will trigger the Collaboration Map.

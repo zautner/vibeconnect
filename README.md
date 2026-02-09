@@ -1,12 +1,12 @@
 # VibeConnect – Expert & Collaboration Discovery
 
-An AI-powered Slack bot that turns a project description or question into a **Collaboration Map**: it identifies subject matter experts and relevant channels when you react to a message with :handshake:.
+An AI-powered Slack bot that turns a project description or question into a **Collaboration Map**: it identifies subject matter experts and relevant channels when you @mention the bot.
 
 🌐 **[View Live Demo](https://zautner.github.io/vibeconnect/)** | 📦 **[GitHub](https://github.com/zautner/vibeconnect)**
 
 ## How it works
 
-1. **Trigger** – Add the :handshake: reaction to any message.
+1. **Trigger** – @mention the bot with your question (e.g. `@VibeConnect who knows about CI?`).
 2. **NLP** – The message text is sent to Gemini to extract 3–4 high-intent search keywords.
 3. **Retrieval** – Slack `search.messages` (with your user token) finds up to 50 relevant posts from across all channels the installing user can access.
 4. **Analysis** – Metadata (usernames, channel names, snippets) is analyzed by the LLM.
@@ -20,10 +20,10 @@ An AI-powered Slack bot that turns a project description or question into a **Co
 
 1. Create an app at [api.slack.com/apps](https://api.slack.com/apps).
 2. **OAuth & Permissions**
-   - Bot token scopes: `channels:history`, `chat:write`, `reactions:read`, `users:read`, `groups:history`, `im:history`, `mpim:history`.
+   - Bot token scopes: `app_mentions:read`, `channels:history`, `chat:write`, `users:read`, `groups:history`, `im:history`, `mpim:history`.
    - User token scopes: `search:read`.
 3. **Event Subscriptions** – Enable, set Request URL to your ngrok URL (e.g. `https://xxx.ngrok.io/slack/events`).
-   - Subscribe to bot events: `reaction_added`.
+   - Subscribe to bot events: `app_mention`.
 4. Install to workspace (Bot + "Act as user" for search — both required). Copy **Bot User OAuth Token** (`xoxb-...`) and **User OAuth Token** (`xoxp-...`).
 5. **Basic Information** – copy **Signing Secret**.
 
@@ -63,5 +63,4 @@ Use the ngrok HTTPS URL as your Slack Event Subscriptions Request URL: `https://
 
 ## Configuration
 
-- **Reaction** – Trigger emoji is `handshake`. Change `TRIGGER_EMOJI` in `app.py` if needed.
 - **Model** – Set `GEMINI_MODEL` in `.env` (default `gemini-2.0-flash`).
