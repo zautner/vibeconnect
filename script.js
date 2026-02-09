@@ -284,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.head.appendChild(style);
 
     // Log a welcome message
-    console.log('%c🤝 Welcome to VibeConnect!', 'font-size: 20px; font-weight: bold; color: #1264a3;');
+    console.log('%c🤝 Welcome to Slack˚It!', 'font-size: 20px; font-weight: bold; color: #1264a3;');
     console.log('%cFind experts and collaboration opportunities with AI', 'font-size: 14px; color: #616061;');
     console.log('%c⭐ Star us on GitHub: https://github.com/zautner/vibeconnect', 'font-size: 12px; color: #007a5a;');
 });
