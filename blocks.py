@@ -8,13 +8,17 @@ def collaboration_map_blocks(
     experts: list[dict],
     channels: list[dict],
     summary: str = "",
+    files: list[dict] | None = None,
 ) -> list[dict]:
     """
     Build Block Kit blocks for the VibeConnect response.
     experts: list of {"user_id", "name", "reason"}.
     channels: list of {"channel_id", "name", "reason"}.
+    files: list of {"file_name", "permalink", "reason"}.
     summary: AI-generated summary of the most relevant information.
     """
+    if files is None:
+        files = []
     header = {
         "type": "header",
         "text": {"type": "plain_text", "text": "🤝 Collaboration Map", "emoji": True},
@@ -67,7 +71,24 @@ def collaboration_map_blocks(
             "text": {"type": "mrkdwn", "text": "*Hot channels*\n" + "\n".join(channel_lines)},
         })
 
-    if not experts and not channels:
+    if files:
+        file_lines = []
+        for f in files:
+            file_name = f.get("file_name") or "Untitled"
+            permalink = (f.get("permalink") or "").strip()
+            # Use clickable link when permalink available
+            display = f"<{permalink}|{file_name}>" if permalink else file_name
+            reason = (f.get("reason") or "").strip()
+            if reason:
+                file_lines.append(f"• 📄 {display} — {reason}")
+            else:
+                file_lines.append(f"• 📄 {display}")
+        sections.append({
+            "type": "section",
+            "text": {"type": "mrkdwn", "text": "*Relevant files*\n" + "\n".join(file_lines)},
+        })
+
+    if not experts and not channels and not files:
         sections.append({
             "type": "section",
             "text": {"type": "mrkdwn", "text": "No clear experts or channels found for this topic. Try a different message or broader context."},

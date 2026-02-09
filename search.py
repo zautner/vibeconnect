@@ -116,3 +116,53 @@ def _get_user_name(client: WebClient, user_id: str) -> str:
         return u.get("real_name") or u.get("name") or user_id
     except Exception:
         return user_id
+
+
+def search_slack_files(keywords: list[str], count: int = 20) -> list[dict]:
+    """
+    Search Slack files with the given keywords.
+
+    Uses the user token (SLACK_USER_TOKEN), so search runs across all channels
+    and DMs that the installing user can access.
+
+    Returns a list of dicts with file_id, file_name, file_type, uploader_name, permalink, etc.
+    """
+    if not keywords:
+        return []
+
+    query = " OR ".join(keywords[:4])
+    client = get_user_client()
+
+    try:
+        response = client.search_files(query=query, count=min(count, 100))
+        files_obj = response.get("files") or {}
+        matches = files_obj.get("matches") or []
+    except SlackApiError as e:
+        if e.response.get("error") == "missing_scope":
+            raise ValueError(
+                "Slack user token must have search:read scope. "
+                "Reinstall the app with user token scopes."
+            ) from e
+        raise
+
+    out = []
+    for f in matches[:count]:
+        user_id = f.get("user") or ""
+        if user_id and user_id not in _user_name_cache:
+            _user_name_cache[user_id] = _get_user_name(client, user_id)
+
+        # Get channel names where file is shared
+        channels = f.get("channels") or []
+        
+        out.append({
+            "file_id": f.get("id") or "",
+            "file_name": f.get("name") or f.get("title") or "Untitled",
+            "file_type": f.get("filetype") or "",
+            "uploader_id": user_id,
+            "uploader_name": _user_name_cache.get(user_id, "Unknown") if user_id else "Unknown",
+            "permalink": f.get("permalink") or "",
+            "channels": channels,
+            "timestamp": f.get("timestamp"),
+        })
+
+    return out

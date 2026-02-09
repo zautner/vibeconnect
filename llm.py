@@ -69,16 +69,18 @@ Message:
 def analyze_to_collaboration_map(
     query: str,
     search_results: list[dict],
+    file_results: list[dict] | None = None,
 ) -> dict:
     """
-    Feed search result metadata to the LLM and get structured Experts + Hot Channels.
+    Feed search result metadata to the LLM and get structured Experts + Hot Channels + Relevant Files.
     search_results: list of {"user_id", "user_name", "channel_id", "channel_name", "snippet", "permalink"}.
-    Returns {"experts": [{"user_id", "name", "reason"}], "channels": [{"channel_id", "name", "reason"}]}.
+    file_results: list of {"file_id", "file_name", "file_type", "uploader_name", "permalink"}.
+    Returns {"summary": str, "experts": [...], "channels": [...], "files": [...]}.
     """
-    if not search_results:
-        return {"experts": [], "channels": []}
+    if not search_results and not file_results:
+        return {"summary": "", "experts": [], "channels": [], "files": []}
 
-    summary = json.dumps(
+    messages_summary = json.dumps(
         [
             {
                 "user_id": r.get("user_id") or "",
@@ -92,20 +94,49 @@ def analyze_to_collaboration_map(
         indent=2,
     )
 
+    files_summary = ""
+    if file_results:
+        files_summary = json.dumps(
+            [
+                {
+                    "file_name": f.get("file_name") or "Untitled",
+                    "file_type": f.get("file_type") or "",
+                    "uploader": f.get("uploader_name") or "unknown",
+                    "permalink": f.get("permalink") or "",
+                }
+                for f in file_results[:15]
+            ],
+            indent=2,
+        )
+
+    files_instruction = ""
+    files_output_shape = ""
+    if file_results:
+        files_instruction = """4. List up to 5 FILES that are most relevant for this topic. Include their file_name and permalink from the data."""
+        files_output_shape = ', "files": [{"file_name": "doc.pdf", "permalink": "https://...", "reason": "one short phrase why"}, ...]'
+
     prompt = f"""You analyze Slack search results to build a "Collaboration Map" for someone who asked or posted this:
 
 Query / message context: {query[:500]}
 
 Search results (user_id, user, channel_id, channel, snippet):
-{summary}
+{messages_summary}
+"""
+    if files_summary:
+        prompt += f"""
+Files found (file_name, file_type, uploader, permalink):
+{files_summary}
+"""
 
+    prompt += f"""
 From these results,
 1. First add 1-2 sentences summarizing the information most relevant to the query from the search results.
 2. List 3–6 PEOPLE who appear to be subject matter experts or active collaborators. Deduplicate. Prefer people who appear multiple times or in substantive messages. Include their user_id from the data. 
 3. List 3–6 CHANNELS that are most relevant for this topic. Deduplicate. Prefer channels with multiple relevant hits. Include their channel_id from the data.
+{files_instruction}
 
 Output ONLY a single JSON object with exactly this shape (no markdown, no extra text):
-{{"summary": "the information most relevant to the query from the search results", "experts": [{{"user_id": "U...", "name": "Full Name", "reason": "one short phrase why"}}, ...], "channels": [{{"channel_id": "C...", "name": "#channel-name", "reason": "one short phrase why"}}, ...]}}
+{{"summary": "the information most relevant to the query from the search results", "experts": [{{"user_id": "U...", "name": "Full Name", "reason": "one short phrase why"}}, ...], "channels": [{{"channel_id": "C...", "name": "#channel-name", "reason": "one short phrase why"}}, ...]{files_output_shape}}}
 """
 
     response = _client().models.generate_content(
@@ -122,14 +153,18 @@ Output ONLY a single JSON object with exactly this shape (no markdown, no extra 
         out = json.loads(text)
         experts = out.get("experts") or []
         channels = out.get("channels") or []
+        files = out.get("files") or []
         if not isinstance(experts, list):
             experts = []
         if not isinstance(channels, list):
             channels = []
+        if not isinstance(files, list):
+            files = []
         return {
             "summary": out.get("summary") or "",
             "experts": [e if isinstance(e, dict) else {"name": str(e), "reason": ""} for e in experts[:8]],
             "channels": [c if isinstance(c, dict) else {"name": str(c), "reason": ""} for c in channels[:8]],
+            "files": [f if isinstance(f, dict) else {"file_name": str(f), "reason": ""} for f in files[:5]],
         }
     except json.JSONDecodeError:
-        return {"experts": [], "channels": []}
+        return {"summary": "", "experts": [], "channels": [], "files": []}

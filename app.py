@@ -118,7 +118,7 @@ def _register_handlers(bolt_app):
 
         try:
             from llm import extract_search_keywords, analyze_to_collaboration_map
-            from search import search_slack_messages
+            from search import search_slack_messages, search_slack_files
             from blocks import collaboration_map_blocks
 
             keywords = extract_search_keywords(message_text)
@@ -131,12 +131,16 @@ def _register_handlers(bolt_app):
                 return
 
             search_results = search_slack_messages(keywords, count=50)
-            logger.info("Search returned %d results", len(search_results))
+            logger.info("Search returned %d message results", len(search_results))
 
-            result = analyze_to_collaboration_map(message_text, search_results)
+            file_results = search_slack_files(keywords, count=15)
+            logger.info("Search returned %d file results", len(file_results))
+
+            result = analyze_to_collaboration_map(message_text, search_results, file_results)
             summary = result.get("summary") or ""
             experts = result.get("experts") or []
             channels = result.get("channels") or []
+            files = result.get("files") or []
 
             # Build fallback name->id maps from search results in case LLM
             # didn't return the IDs reliably.
@@ -174,6 +178,7 @@ def _register_handlers(bolt_app):
                 summary=summary,
                 experts=experts,
                 channels=channels,
+                files=files,
             )
             _post_blocks(client, channel_id, ts, blocks)
         except ValueError as e:
